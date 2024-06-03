@@ -1,9 +1,10 @@
-CROSS_COMPILE      ?= riscv64-unknown-elf-
+CROSS_COMPILE      = riscv64-unknown-elf-
+CROSS_COMPILE      ?= riscv64-unknown-linux-gnu-
 
 AR                 = $(CROSS_COMPILE)ar
 
-CFLAGS             = -O3 -mcmodel=medany -ffunction-sections -fdata-sections -ffast-math -ffreestanding -nostdinc -DPOLYBENCH_DUMP_ARRAYS -DSMALL_DATASET
-LDFLAGS            = -nostartfiles -static -lgcc examples/polybench/polybench-code/utilities/polybench.o \
+CFLAGS             = -O3 -mcmodel=medany -ffunction-sections -fdata-sections -ffast-math -ffreestanding -DPOLYBENCH_DUMP_ARRAYS -DSMALL_DATASET
+LDFLAGS            = -nostartfiles -static examples/polybench/polybench-code/utilities/polybench.o \
                      -Wl,--nmagic -Wl,--gc-sections -nostdlib
 INCLUDES           = -Ienv/common -Iexamples/polybench/polybench-code/utilities -Ilibfemto/include
 
