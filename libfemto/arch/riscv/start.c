@@ -8,7 +8,7 @@ extern char _bss_start;
 extern char _bss_end;
 extern char _memory_end;
 
-int main(int argc, char **argv);
+extern int main(int argc, char **argv);
 
 __attribute__((noreturn)) void libfemto_start_main()
 {
