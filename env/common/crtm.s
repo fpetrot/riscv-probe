@@ -19,7 +19,7 @@ _start:
     # set up stack pointer based on hartid
     csrr    t0, mhartid
     slli    t0, t0, STACK_SHIFT
-    la      sp, stacks + STACK_SIZE
+    la      sp, __stacks + STACK_SIZE
     add     sp, sp, t0
 
     # park all harts excpet hart 0
@@ -33,10 +33,11 @@ _start:
     # jump to libfemto_start_main
     j       libfemto_start_main
 
-    # sleeping harts mtvec calls trap_fn upon receiving IPI
+    la      a1, argv
 park:
-    wfi
-    j       park
+    lw      t0, __go
+    beqz    t0, park
+    j       main
 
     .align 2
 trap_vector:
@@ -89,6 +90,13 @@ trap_vector:
 
     .bss
     .align 4
-    .global stacks
-stacks:
+__stacks:
     .skip STACK_SIZE * MAX_HARTS
+
+    .globl __go
+    # Cannot be put into bss as it must be zero before cpu0 boot
+    .data
+__go :
+    .word 0
+argv :
+    .ascii "otmef\0"
