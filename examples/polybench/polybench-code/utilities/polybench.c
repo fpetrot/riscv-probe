@@ -393,6 +393,8 @@ void* polybench_alloc_data(unsigned long long int n, int elt_size)
   return ret;
 }
 
+unsigned int __errno;
+
 double sqrt(double x)
 {
   asm ("fsqrt.s %0, %1" : "=f" (x) : "f" (x));
