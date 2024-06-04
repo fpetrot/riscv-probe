@@ -1,3 +1,11 @@
+# Fork of Michael J. Clark riscv-probe
+This fork includes the polybench, a benchmark suite due to Louis-Noël Pouchet that challenges compilers.
+This allows to test various stuff without having to boot a full fledged Linux, in particular when using QEMU's plugins.
+
+This ought to be compiled with a toolchain (https://github.com/riscv-collab/riscv-gnu-toolchain) configured with the `--with-cmodel=medany` flags, to avoid the infamous *relocation truncated to fit ...* message.
+To run a program with QEMU, just refer to the original README below, but add the `-bios none` option as QEMU loads `opensbi` by default now.
+
+====================== Original README =============================
 # riscv-probe
 
 Simple machine mode program to probe RISC-V control and status registers.
