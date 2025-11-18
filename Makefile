@@ -5,7 +5,7 @@ AR                 = $(CROSS_COMPILE)ar
 CFLAGS             = -mcmodel=medany -ffunction-sections -fdata-sections -ffast-math -ffreestanding
 LDFLAGS            = -nostartfiles -nostdlib -static -lgcc examples/polybench/polybench-code/utilities/polybench.o \
                      -Wl,--nmagic -Wl,--gc-sections #-nostdlib
-INCLUDES           = -Ienv/common -Iexamples/polybench/polybench-code/utilities
+INCLUDES           = -Ienv/common -Iexamples/polybench/polybench-code/utilities -Ilibfemto/include
 
 libfemto_dirs      = libfemto/std libfemto/drivers libfemto/arch/riscv
 libfemto_src       = $(sort $(foreach d,$(libfemto_dirs),$(wildcard $(d)/*.c)))
@@ -19,7 +19,7 @@ libfemto_objs      = $(patsubst %.s,%.o,$(libfemto_asm)) \
 
 subdirs            = examples
 
-libs               = libfemto
+libs               = libfemto libm
 
 configs            = rv32im rv32imac rv64imac
 
@@ -32,8 +32,8 @@ CFLAGS_rv32imac    = -g -march=rv32imac -mabi=ilp32 -Ienv/common/rv32
 LDFLAGS_rv32imac   =
 
 CC_rv64imac        = $(CROSS_COMPILE)gcc
-CFLAGS_rv64imac    = -g -march=rv64imadc -mabi=lp64d  -Ienv/common/rv64
-LDFLAGS_rv64imac   =
+CFLAGS_rv64imac    = -g -march=rv64imac_zicsr -mabi=lp64  -Ienv/common/rv64
+LDFLAGS_rv64imac   = -Lbuild/lib/rv64imac
 
 #targets            = rv32im:default \
                      rv32imac:default \
@@ -57,7 +57,7 @@ targets            = rv64imac:virt
 all: examples/polybench/polybench-code/utilities/polybench.o all_programs
 
 examples/polybench/polybench-code/utilities/polybench.o: examples/polybench/polybench-code/utilities/polybench.c
-	$(CC_rv64imac) $(CFLAGS) $(CFLAGS_rv64imac) -c $< -o $@
+	$(CC_rv64imac) $(CFLAGS) $(INCLUDES) $(CFLAGS_rv64imac) -c $< -o $@
 
 clean:
 	rm -fr examples/polybench/polybench-code/utilities/polybench.o build

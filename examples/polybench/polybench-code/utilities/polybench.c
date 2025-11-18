@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
+#if 0
 #include <time.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <sched.h>
 #include <math.h>
+#endif
 #include "polybench.h"
 #ifdef _OPENMP
 # include <omp.h>
@@ -400,6 +402,7 @@ void* polybench_alloc_data(unsigned long long int n, int elt_size)
   return ret;
 }
 
+#if 0
 /* Ok, let's do that */
 double
 sqrt (double x)
@@ -407,5 +410,6 @@ sqrt (double x)
   asm ("fsqrt.s %0, %1" : "=f" (x) : "f" (x));
   return x;
 }
+#endif
 
 int __errno;
